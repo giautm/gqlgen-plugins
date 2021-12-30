@@ -1,0 +1,19 @@
+{{ reserveImport "context"  }}
+{{ reserveImport "strings"  }}
+
+{{ reserveImport "github.com/vektah/gqlparser/v2/formatter" }}
+{{ reserveImport "giautm.dev/gqlgen-plugins/bramble/runtime" "bramble" }}
+
+{{ $root := . }}
+
+func (ec *executionContext) __resolve__bramble__service(ctx context.Context) (*bramble.Service, error) {
+	s := new(strings.Builder)
+	f := formatter.NewFormatter(s)
+	f.FormatSchema(parsedSchema)
+
+	return &bramble.Service{
+		Name:    "{{ $root.Name }}",
+		Version: "{{ $root.Version }}",
+		Schema:  s.String(),
+	}, nil
+}
